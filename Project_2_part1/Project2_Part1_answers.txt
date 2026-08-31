@@ -1,0 +1,19 @@
+Overall trends:
+All of the runs consistently fail the per base seuquence content and the sequence duplication levels.
+However, this makes sense, because RNA seq data is intended to have many duplicates, and may be detecting the indexes, 
+which are conserved across all sequences. Overall, sequence quality is high for all 4 files, and I am not
+overly concerned about any of them.
+
+file specific trends:
+    SRR25630310_1.fastq
+        total sequences: 35140212
+        The one section I am concerned about is the in the over-represented sequences,
+there is a repeat T sequence in SRR25630310_1.fastq.
+    SRR25630310_2.fastq
+        total sequences: 35140212
+    SRR25630391_1.fastq
+        total sequences: 12529274
+    SRR25630391_2.fastq
+        total sequences: 12529274
+
+Generally, I trust this RNAseq data and believe it is valid to continue with analysis.
