@@ -1,3 +1,12 @@
+Bash commands for installation and fastQC analysis:
+pixi init Project2_QAA
+pixi add fastqc cutadapt trimmomatic
+prefetch SRR25630310 --max-size 40GB
+prefetch SRR25630391 --max-size 40GB
+fasterq SRR25630310
+fasterq SRR25630391
+
+
 Overall trends:
 All of the runs consistently fail the per base seuquence content and the sequence duplication levels.
 However, this makes sense, because RNA seq data is intended to have many duplicates, and may be detecting the indexes, 
