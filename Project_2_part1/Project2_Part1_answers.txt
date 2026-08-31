@@ -3,8 +3,10 @@ pixi init Project2_QAA
 pixi add fastqc cutadapt trimmomatic
 prefetch SRR25630310 --max-size 40GB
 prefetch SRR25630391 --max-size 40GB
-fasterq SRR25630310
-fasterq SRR25630391
+fasterq-dump SRR25630310
+fasterq-dump SRR25630391
+fastqc *.fastq
+# These bash commands were all run with an sbatch command in a .sh file. These files will be uploaded with part 1.
 
 
 Overall trends:
