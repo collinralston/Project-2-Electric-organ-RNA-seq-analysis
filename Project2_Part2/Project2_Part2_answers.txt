@@ -1,0 +1,67 @@
+5. If you haven't already in your Project2_QAA environment, install Cutadapt and Trimmomatic. Check your installations.
+		cutadapt --version
+		5.2
+		trimmomatic -version
+		0.41
+6. Using Cutadapt, properly trim adapter sequences from your assigned files. Be sure to read how to use Cutadapt. Use default settings. What proportion of reads (both R1 and R2) were trimmed?
+	head -12 SRR25630391_1.fastq # in order to see what the fastq files looked like in search of the header
+	Suspected 3' Adapters in SRR25630391_1.fastq:
+		cat SRR25630391_1.fastq | grep -A 1 "^@" | grep -v "^@" |grep -v "^--" | grep "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA$" | wc -l
+		wc -l SRR25630391_1.fastq
+		adapters:19065
+		total:50117096
+	Suspected 3' Adapters in SRR25630310_1.fastq:
+		cat SRR25630310_1.fastq | grep -A 1 "^@" | grep -v "^@" |grep -v "^--" | grep "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA$" | wc -l
+		wc -l SRR25630310_1.fastq
+		adapters:85456
+		total:140560848
+	Suspected 3' Adapters in SRR25630391_2.fastq:
+		cat SRR25630391_2.fastq | grep -A 1 "^@" | grep -v "^@" |grep -v "^--" | grep "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT$" | wc -l
+		wc -l SRR25630391_2.fastq
+		adapters:5340
+		total:50117096
+	Suspected 3' Adapters in SRR25630310_2.fastq:
+		cat SRR25630310_2.fastq | grep -A 1 "^@" | grep -v "^@" |grep -v "^--" | grep "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT$" | wc -l
+		wc -l SRR25630310_2.fastq
+		adapters:27575
+		total:140560848
+
+	It seems the adapters are always on the 3' end. I checked and made sure by replacing the last grep with "^ADAPTER" instead of "ADAPTER$"
+	and alwats got a stdout of 0. This makes me suspect I correctly identified the adapters.
+
+	cutadapt:
+	sbatch: cutadapt.sh
+	sbatch ./Project2_Part2/cutadapt.sh	SRR25630310	job# 47013023
+	full command: /usr/bin/time -v pixi run cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o SRR25630310_1_adapted.fastq -p SRR25630310_2_adapted.fastq SRR25630310_1.fastq SRR25630310_2.fastq
+		time: 3:17.10
+		CPU: 98%
+		memory: 62864
+	sbatch ./Project2_Part2/cutadapt.sh	SRR25630391	job# 47013027
+	full command: /usr/bin/time -v pixi run cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o SRR25630391_1_adapted.fastq -p SRR25630391_2_adapted.fastq SRR25630391_1.fastq SRR25630391_2.fastq
+		time: 1:05.45
+		CPU: 98%
+		memory: 62852
+	What proportion of reads were trimmed?
+		SRR25630310
+			Read 1 with adapter:               6,141,779 (17.5%)
+			Read 2 with adapter:               6,326,719 (18.0%)
+		SRR25630391
+			Read 1 with adapter:               1,658,532 (13.2%)
+			Read 2 with adapter:               1,740,406 (13.9%)
+		This is significantly different than what I predicted with my Unix commands.
+		I am thinking this may be because I only checked if the whole adapter was there,
+		where this may check whether any portion of the adapter is present.
+7. Use Trimmomatic to quality trim your reads.
+	trimmomatic:
+	creating sbatch: trimmomatic.sh
+	sbatch ./Project2_Part2/trimmomatic.sh	job# 47013155
+8. Plot the trimmed read length distributions for both paired R1 and paired R2 reads.
+	I wrote plot_trimmed.py to use Matplotlib to plot the distribution of
+	read length. I did not expect more trimming of adapters in the forward strand,
+	but it appears that is what happened in both RNAseq trims. This is interesting,
+	and I will ask about it in class tommorow.
+	command for SRR25630391: pixi run ./Project2_Part2/plot_trimmed.py -f Project2_Part2/trimmomatic_outs/SRR25630391_1_paired.fastq -r Project2_Part2/trimmomatic_outs/SRR25630391_2_paired.fastq
+	command for SRR25630310: pixi run ./Project2_Part2/plot_trimmed.py -f Project2_Part2/trimmomatic_outs/SRR25630310_1_paired.fastq -r Project2_Part2/trimmomatic_outs/SRR25630310_2_paired.fastq
+	Figures are in Project2_Part2/figures
+	
+
