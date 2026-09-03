@@ -1,0 +1,41 @@
+10. Install additional software for alignment and counting of RNA-seq reads. In your Project2_QAA environment.
+	pixi add Star
+	pixi add samtools
+	pixi add NumPy
+	pixi add HTSeq
+11. Download the publicly available Campylomormyrus compressirostris genome fasta and gff file
+	Had to convert gff to gtf
+		pixi add gffread
+		pixi run gffread /projects/bgmp/shared/Bi623/Project2/campylomormyrus.gff -T -o campylomormyrus.gtf
+	Created the database via create_alignment_db.sh
+	Ran the alignment via align_reads.sh
+13. Using your script from PS8 in Bi621, report the number of mapped and unmapped reads from each of your 2 SAM files.
+	SRR25630310
+		mapped reads: 63447877
+		unmapped reads: 6192613
+	SRR25630391
+		mapped reads: 23860965
+		unmapped reads: 1034291
+14. Count reads that map to features using htseq-count.
+	I wrote HTSeq-count.sh in order to run HTSeq-count. 
+15. Demonstrate convincingly whether or not the data are from "strand-specific" RNA-Seq libraries and which stranded= parameter should you use for counting your reads for a future differential gene expression analyses.
+	Commands and results:
+		cat SRR25630310_strnd |grep -v "^__" | cut -f 2 |  awk '{sum+=$1} END {print sum}'
+		860174
+		cat SRR25630310_rvs_strnd |grep -v "^__" | cut -f 2 |  awk '{sum+=$1} END {print sum}'
+		14057298
+		cat SRR25630391_strnd |grep -v "^__" | cut -f 2 |  awk '{sum+=$1} END {print sum}'
+		411679
+		cat SRR25630391_rvs_strnd |grep -v "^__" | cut -f 2 |  awk '{sum+=$1} END {print sum}'
+		7142392
+	Justification:
+		I used bash and awk to total all of the gene counts.
+			If the total gene count is significantly different between forward and reverse strandedness -> stranded
+			If not -> stranded
+			In the case of strandedness, the file with more matches will be the correct one to use.
+		The counts in the reverse strandedness is consistently higher in both alignments.
+		This suggests that both RNAseq libraries were prepped as reverse stranded.
+		In requested format:
+			Because the total gene counts are consistently higher in the reverse strand,
+			both of the RNAseq libraries are reverse stranded.
+16. The script for part3 is in Project2_Part3/part3_pipeline.sh
