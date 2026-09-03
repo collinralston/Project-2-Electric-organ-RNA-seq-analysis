@@ -6,8 +6,8 @@
 *.out
 *.sra
 SRR_files
-Project-2-Electric-organ-RNA-seq-analysisProject2_Part3/C_compressirostris.dna.primary_assembly.STAR_2.7.11b
-Project-2-Electric-organ-RNA-seq-analysisProject2_Part3/STAR_310
-Project-2-Electric-organ-RNA-seq-analysisProject2_Part3/STAR_391
+Project2_Part3/C_compressirostris.dna.primary_assembly.STAR_2.7.11b
+Project2_Part3/Star_310
+Project2_Part3/Star_391
 *.out
 *.sam
